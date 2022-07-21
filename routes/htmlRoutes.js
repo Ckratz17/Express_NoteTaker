@@ -1,4 +1,5 @@
 // require path
+const htmlRouter = require('express').Router()
 // rquire router from express - activity 21 and 22, specifically in the routes in activity 22
 
 // set up a route for /notes that responds with the notes.html file
