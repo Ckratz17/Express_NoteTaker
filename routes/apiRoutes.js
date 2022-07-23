@@ -5,44 +5,33 @@ const router = express.Router();
 
 let data = require('../db/db.json');
 // GET ALL THE NOTES //
-router.get('/', (req, res) => 
-    // then take the notes and return them with res.json
-    res.json(data));
-
+router.get('/', (req, res) => res.json(data));
 // POST A NEW NOTE //
-router.post('/notes', (req, res) => {
-// addNote(req.body)
-  const newTitle = req.title.body
-  const newEntry = req.title.text
-    
-    if(!newTitle || !newEntry) {
-        res.status(400).json('Error in making your note!')
-    }else {
-        const newNote = {
+router.post('/', (req, res) => {
+    const newTitle = req.body.title;
+    const newText = req.body.text;
+    if (!newTitle || !newText) {
+        res.status(400).json({msg: 'Need non-empty title and text input.'})
+    } else {
+        const newJSON = {
             id: uuid.v4(),
             title: newTitle,
-            entry: newEntry
-        }
-        // then return note with res.json
-        data.push(newNote)
-        res.json(data)
-
-    }
-    
-})
-
+            text: newText
+        };
+        data.push(newJSON);
+        res.json(data);
+    };
+});
 // DELETE A NOTE //
 router.delete('/:id', (req, res) => {
-    // removeNote(req.params.id)
-    const deletenote = data.some(obj => obj.id === req.params.id)
-    // give a status letting you know it's been deleted
-    if(deletenote) {
-        data = data.filter(obj => obj.id === req.params.id)
-        res.json(data)
-    }else {
-        res.status(400).json(data)
-    }
-})
+    const found = data.some(obj => obj.id === req.params.id);
+    if (found) {
+        data = data.filter(obj => obj.id !== req.params.id);
+        res.json(data);
+    } else {
+        res.status(400).json(data);
+    };
+});
 
-module.exports = router
 // export your router
+module.exports = router;
