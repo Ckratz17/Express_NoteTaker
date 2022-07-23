@@ -1,17 +1,17 @@
 // require router from express - activity 21 and 22, specifically in the routes in activity 22
-const api = require('express').Router();
-const { Router } = require('express');
-const uuid = require('uuid')
+const router = require('express').Router()
+// const uuid = require('uuid')
+const { v4: uuidv4 } = require('uuid')
 
 let data = require('../db/db.json')
 // GET ALL THE NOTES //
-api.get('/', (req, res) => 
+router.get('/', (req, res) => 
     // then take the notes and return them with res.json
     res.json(data)
 )
 
 // POST A NEW NOTE //
-api.post('/notes', (req, res) => {
+router.post('/notes', (req, res) => {
 // addNote(req.body)
   const newTitle = req.title.body
   const newEntry = req.title.text
@@ -20,7 +20,7 @@ api.post('/notes', (req, res) => {
         res.status(400).json('Error in making your note!')
     }else {
         const newNote = {
-            id: uuid.v4(),
+            id: uuidv4.v4(),
             title: newTitle,
             entry: newEntry
         }
@@ -33,7 +33,7 @@ api.post('/notes', (req, res) => {
 })
 
 // DELETE A NOTE //
-api.delete('notes/:id', (req, res) => {
+router.delete('notes/:id', (req, res) => {
     // removeNote(req.params.id)
     const deletenote = data.some(obj => obj.id === req.params.id)
     // give a status letting you know it's been deleted
@@ -45,5 +45,5 @@ api.delete('notes/:id', (req, res) => {
     }
 })
 
-module.exports = api
+module.exports = router
 // export your router
